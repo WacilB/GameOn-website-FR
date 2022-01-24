@@ -11,6 +11,7 @@ function editNav() {
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
+const closeModalBtn = document.getElementsByClassName("close")
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -21,3 +22,11 @@ function launchModal() {
 }
 
 
+//Close modal event
+
+closeModalBtn[0].addEventListener("click", closeModal )
+
+// Close modal form with the "X" button
+function closeModal(){
+  modalbg.style.display = "none";
+}
