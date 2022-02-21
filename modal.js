@@ -1,3 +1,4 @@
+//Fonction permettant de rajouter la classe Css responsive au menu
 function editNav() {
   let x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -7,26 +8,24 @@ function editNav() {
   }
 }
 
-// DOM Elements
+// Déclaration des variables
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
-const closeModalBtn = document.getElementsByClassName("close")
+const closeModalBtn = document.getElementsByClassName("close");
 
-// launch modal event
+//  Événement lancer la fenêtre modale du formulaire lorsque le bouton est cliqué
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
-// launch modal form
+// Fonction pour ouvrir la fenêtre modale du formulaire
 function launchModal() {
   modalbg.style.display = "block";
 }
 
+//  Événement fermer la fenêtre modale du formulaire lorsque le bouton est cliqué
+closeModalBtn[0].addEventListener("click", closeModal);
 
-//Close modal event
-
-closeModalBtn[0].addEventListener("click", closeModal )
-
-// Close modal form with the "X" button
-function closeModal(){
+// Fonction pour fermer la fenêtre modale du formulaire
+function closeModal() {
   modalbg.style.display = "none";
 }

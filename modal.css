@@ -66,16 +66,28 @@ img {
 .topnav .icon {
   display: none;
 }
-
+@media screen and (max-width : 1110px){
+.topnav{
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+}
+}
 @media screen and (max-width: 768px) {
+  .topnav{
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 13.5% 10%;
+  }
+  .header-logo img{
+    width:50%;
+  }
   .topnav a {display: none;}
   .topnav a.icon {
-    float: right;
     display: block;
   }
-}
-
-@media screen and (max-width: 768px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {
     position: absolute;
@@ -85,7 +97,6 @@ img {
   .topnav.responsive a {
     float: none;
     display: block;
-    text-align: left;
   }
 }
 
@@ -207,30 +218,7 @@ input {
   font-size: 20px;
   height: 48px;
 }
-.formData[data-error]::after {
-  content: attr(data-error);
-  font-size: 0.4em;
-  color: #e54858;
-  display: block;
-  margin-top: 7px;
-  margin-bottom: 7px;
-  text-align: right;
-  line-height: 0.3;
-  opacity: 0;
-  transition: 0.3s;
-}
-.formData[data-error-visible="true"]::after {
-  opacity: 1;
-}
-.formData[data-error-visible="true"] .text-control {
-  border: 2px solid #e54858;
-}
-/* 
-input[data-error]::after {
-    content: attr(data-error);
-    font-size: 0.4em;
-    color: red;
-} */
+
 .checkbox-label,
 .checkbox2-label {
   position: relative;
