@@ -5,7 +5,7 @@ const inputs = document.querySelectorAll(
 );
 const radio = document.querySelectorAll("input[type=radio]");
 const form = document.getElementById("form");
-let first, last, email, date, quantity, locations, nextEvenement;
+let first, last, email, date, quantity, locations,termOfUse, nextEvenement;
 
 const errorDisplay = (tag, message, valid) => {
   const container = document.querySelector(".formData-" + tag);
@@ -20,14 +20,8 @@ const errorDisplay = (tag, message, valid) => {
   }
 };
 const firstChecker = (value) => {
-  if (value.length > 1 && value.length < 3) {
-    errorDisplay("first", "Le prénom doit contenir 2 caractères");
-    first = null;
-  } else if (!value.match(/^[a-zA-Z0-9_.-]*$/)) {
-    errorDisplay(
-      "first",
-      "Le prénom ne doit pas contenir de caractère spéciaux"
-    );
+  if (value.length < 2) {
+    errorDisplay("first", "Veuillez entrer 2 caractères ou plus pour le champ du prénom.");
     first = null;
   } else {
     errorDisplay("first", "", true);
@@ -35,11 +29,8 @@ const firstChecker = (value) => {
   }
 };
 const lastChecker = (value) => {
-  if (value.length > 1 && value.length < 3) {
-    errorDisplay("last", "Le nom doit contenir 2 caractères");
-    last = null;
-  } else if (!value.match(/^[a-zA-Z0-9_.-]*$/)) {
-    errorDisplay("last", "Le nom ne doit pas contenir de caractère spéciaux");
+  if (value.length < 2) {
+    errorDisplay("last", "Veuillez entrer 2 caractères ou plus pour le champ du prénom.");
     last = null;
   } else {
     errorDisplay("last", "", true);
@@ -48,7 +39,7 @@ const lastChecker = (value) => {
 };
 const emailChecker = (value) => {
   if (!value.match(/^[\w_-]+@[\w-]+\.[a-z]{2,4}$/i)) {
-    errorDisplay("email", "Le mail n'est pas valide");
+    errorDisplay("email", "Veuillez entrer une adress email valide.");
     email = null;
   } else {
     errorDisplay("email", "", true);
@@ -56,7 +47,6 @@ const emailChecker = (value) => {
   }
 };
 const dateChecker = (value) => {
-
   const dateParser = (date) => {
     let newDate = new Date(date).toLocaleDateString("fr-FR", {
       year: "numeric",
@@ -65,10 +55,14 @@ const dateChecker = (value) => {
     });
     return newDate;
   };
-  if(!value.match(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)|| value == ""||value =="jj/mm/aaaa"){
-    errorDisplay("date", "Veuillez renseignez votre date de naissance")
-    date = null
-  }else{
+  if (
+    !value.match(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/) ||
+    value == "" ||
+    value == "jj/mm/aaaa"
+  ) {
+    errorDisplay("date", "Veuillez renseignez votre date de naissance");
+    date = null;
+  } else {
     let parseDate = dateParser(value);
     date = parseDate;
     errorDisplay("date", "", true);
@@ -88,29 +82,34 @@ const quantityChecker = (value) => {
   }
 };
 const radioChecker = () => {
-  for(const radioButton of radio){
-    if(radioButton.checked){
-      locations = radioButton.value
-      break
+  for (const radioButton of radio) {
+    if (radioButton.checked) {
+      locations = radioButton.value;
+      break;
     }
   }
-  if(locations == null){
-    errorDisplay("location", "Vous devez selectionner un tournois")
+  if (locations == null) {
+    errorDisplay("location", "Vous devez selectionner un tournois");
     locations = null;
   }
 };
-const checkboxChecker =()=>{
-  if(!checkbox1.checked){
-    errorDisplay("checkbox", "Vous devez accepter les conditions d'utilisation")
-  }else{
-    errorDisplay("checkbox","", true)
+const checkboxChecker = () => {
+  if (!checkbox1.checked) {
+    errorDisplay(
+      "checkbox",
+      "Vous devez accepter les conditions d'utilisation"
+      );
+      termOfUse =null;
+    } else {
+      errorDisplay("checkbox", "", true);
+      termOfUse =true;
   }
-  if(!checkbox2.checked){
+  if (!checkbox2.checked) {
     nextEvenement = false;
-  }else{
-    nextEvenement =true;
+  } else {
+    nextEvenement = true;
   }
-}
+};
 
 inputs.forEach((inputs) => {
   inputs.addEventListener("input", (e) => {
@@ -136,11 +135,11 @@ inputs.forEach((inputs) => {
   });
 });
 
-form.addEventListener("submit", (e)=>{
+form.addEventListener("submit", (e) => {
   e.preventDefault();
-  radioChecker()
-  checkboxChecker()
-  if(first && last && email && date && quantity && locations){
+  radioChecker();
+  checkboxChecker();
+  if (first && last && email && date && quantity && locations && termOfUse) {
     const data = {
       first,
       last,
@@ -149,10 +148,21 @@ form.addEventListener("submit", (e)=>{
       quantity,
       locations,
       nextEvenement,
-    }
+    };
     console.log(data);
-    alert("Inscription validé")
-  }else{
-    alert("Erreur d'inscription")
+    inputs.forEach((input) => (input.value = ""));
+    for (const radioButton of radio) {
+      radioButton.checked = false;
+    }
+    first = null;
+    last = null;
+    email = null;
+    date = null;
+    quantity = null;
+    locations = null;
+    nextEvenement = null;
+    alert("Inscription validé");
+  } else {
+    alert("Erreur d'inscription");
   }
-})
+});
