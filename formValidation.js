@@ -5,6 +5,7 @@ const inputs = document.querySelectorAll(
 );
 const radio = document.querySelectorAll("input[type=radio]");
 const form = document.getElementById("form");
+const modal = document.querySelector(".modal-body");
 let first, last, email, date, quantity, locations, termOfUse, nextEvenement;
 
 // Fonction permettant d'afficher les messages d'erreurs lorsqu'un champ du formulaire est mal renseigné
@@ -55,7 +56,7 @@ const lastChecker = (value) => {
 //Fonction permettant de vérifier le champ 'Email'
 
 const emailChecker = (value) => {
-  if (!value.match(/^[\w_-]+@[\w-]+\.[a-z]{2,4}$/i)) {
+  if (!value.match(/^[\w_\-.]+@[\w-]+\.[a-z]{2,4}$/i)) {
     errorDisplay("email", "Veuillez entrer une adresse email valide.");
     email = null;
   } else {
@@ -94,7 +95,7 @@ const dateChecker = (value) => {
 //Fonction permettant de vérifier le champ 'Nombre de tournois'
 
 const quantityChecker = (value) => {
-  if (value == "" || !isNaN(value)) {
+  if (value == "" || isNaN(value)) {
     errorDisplay(
       "quantity",
       "Vous devez renseigner le nombre de concours auquel vous avez participé "
@@ -197,8 +198,9 @@ form.addEventListener("submit", (e) => {
     quantity = null;
     locations = null;
     nextEvenement = null;
-    alert("Merci ! Votre réservation a été reçue.");
+    modal.innerHTML = "<h3>Merci ! Votre réservation a été reçue.</h3>"
   } else {
     alert("Erreur d'inscription");
   }
 });
+
