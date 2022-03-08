@@ -1,7 +1,7 @@
 // Déclaration des variables 
 
 const inputs = document.querySelectorAll(
-  "input[type=text], input[type=number], input[type=email], input[type=date]"
+  "input[type=text], input[type=number], input[type=email], input[type=date], input[type=checkbox]"
 );
 const radio = document.querySelectorAll("input[type=radio]");
 const form = document.getElementById("form");
@@ -198,7 +198,7 @@ form.addEventListener("submit", (e) => {
     quantity = null;
     locations = null;
     nextEvenement = null;
-    modal.innerHTML = "<h3>Merci ! Votre réservation a été reçue.</h3>"
+    modal.innerHTML = "<div class='modal__finish'> <h3>Merci pour votre inscription</h3></div>"
   } else {
     alert("Erreur d'inscription");
   }

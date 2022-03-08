@@ -13,6 +13,7 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const closeModalBtn = document.getElementsByClassName("close");
+const modalFinishBtn = document.getElementsByClassName(".modal__finish__btn")
 
 //  Événement lancer la fenêtre modale du formulaire lorsque le bouton est cliqué
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -24,6 +25,7 @@ function launchModal() {
 
 //  Événement fermer la fenêtre modale du formulaire lorsque le bouton est cliqué
 closeModalBtn[0].addEventListener("click", closeModal);
+
 
 // Fonction pour fermer la fenêtre modale du formulaire
 function closeModal() {
