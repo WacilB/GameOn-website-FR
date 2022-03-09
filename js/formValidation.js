@@ -22,93 +22,124 @@ const errorDisplay = (tag, message, valid) => {
     span.textContent = message;
   }
 };
-
-//Fonction permettant de vérifier le champ 'Prénom'
-
-const firstChecker = (value) => {
-  if (value.length < 2) {
-    errorDisplay(
-      "first",
-      "Veuillez entrer 2 caractères ou plus pour le champ du prénom."
-    );
-    first = null;
-  } else {
-    errorDisplay("first", "", true);
-    first = value;
-  }
-};
-
-//Fonction permettant de vérifier le champ 'Nom'
-
-const lastChecker = (value) => {
-  if (value.length < 2) {
-    errorDisplay(
-      "last",
-      "Veuillez entrer 2 caractères ou plus pour le champ du prénom."
-    );
-    last = null;
-  } else {
-    errorDisplay("last", "", true);
-    last = value;
-  }
-};
-
-//Fonction permettant de vérifier le champ 'Email'
-
-const emailChecker = (value) => {
-  if (!value.match(/^[\w_\-.]+@[\w-]+\.[a-z]{2,4}$/i)) {
-    errorDisplay("email", "Veuillez entrer une adresse email valide.");
-    email = null;
-  } else {
-    errorDisplay("email", "", true);
-    email = value;
-  }
-};
-
-//Fonction permettant de vérifier le champ 'Date'
-
-const dateChecker = (value) => {
-  //Fonction permettant d'harmoniser le format de la date afin de
-  // pouvoir stocker les différentes dates des utilisateurs dans le même format
-  const dateParser = (date) => {
-    let newDate = new Date(date).toLocaleDateString("fr-FR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    return newDate;
-  };
-  let dateLimit = new Date();
-  dateLimit = dateLimit.setFullYear(dateLimit.getFullYear() - 5);
-  if (
-    !value.match(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/) ||
-    value == "" ||
-    value == "jj/mm/aaaa"
-  ) {
-    errorDisplay("date", "Veuillez renseigner votre date de naissance");
-    date = null;
-  } else if (Date.parse(value) > dateLimit) {
-    errorDisplay("date", "Veuillez renseigner une date de naissance valide");
-    date = null;
-  } else {
-    let parseDate = dateParser(value);
-    date = parseDate;
-    errorDisplay("date", "", true);
-  }
-};
-
-//Fonction permettant de vérifier le champ 'Nombre de tournois'
-
-const quantityChecker = (value) => {
-  if (value == "" || isNaN(value)) {
-    errorDisplay(
-      "quantity",
-      "Vous devez renseigner le nombre de concours auquel vous avez participé "
-    );
-    quantity = null;
-  } else {
-    errorDisplay("quantity", "", true);
-    quantity = value;
+const checker = (tag, value) => {
+  switch (tag) {
+    //Fonction permettant de vérifier le champ 'Prénom'
+    case "first":
+      if (value.length < 2) {
+        errorDisplay(
+          "first",
+          "Veuillez entrer 2 caractères ou plus pour le champ du prénom."
+        );
+        first = null;
+      } else {
+        errorDisplay("first", "", true);
+        first = value;
+      }
+      break;
+    //Fonction permettant de vérifier le champ 'Nom'
+    case "last":
+      if (value.length < 2) {
+        errorDisplay(
+          "last",
+          "Veuillez entrer 2 caractères ou plus pour le champ du nom."
+        );
+        last = null;
+      } else {
+        errorDisplay("last", "", true);
+        last = value;
+      }
+      break;
+    //Fonction permettant de vérifier le champ 'Email'
+    case "email":
+      if (!value.match(/^[\w_\-.]+@[\w-]+\.[a-z]{2,4}$/i)) {
+        errorDisplay("email", "Veuillez entrer une adresse email valide.");
+        email = null;
+      } else {
+        errorDisplay("email", "", true);
+        email = value;
+      }
+      break;
+    //Fonction permettant de vérifier le champ 'Date'
+    case "date":
+      //Fonction permettant d'harmoniser le format de la date afin de
+      // pouvoir stocker les différentes dates des utilisateurs dans le même format
+      const dateParser = (date) => {
+        let newDate = new Date(date).toLocaleDateString("fr-FR", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        return newDate;
+      };
+      let dateLimit = new Date();
+      dateLimit = dateLimit.setFullYear(dateLimit.getFullYear() - 5);
+      if (
+        !value.match(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/) ||
+        value == "" ||
+        value == "jj/mm/aaaa"
+      ) {
+        errorDisplay("date", "Veuillez renseigner votre date de naissance");
+        date = null;
+      } else if (Date.parse(value) > dateLimit) {
+        errorDisplay(
+          "date",
+          "Veuillez renseigner une date de naissance valide"
+        );
+        date = null;
+      } else {
+        let parseDate = dateParser(value);
+        date = parseDate;
+        errorDisplay("date", "", true);
+      }
+      break;
+    //Fonction permettant de vérifier le champ 'Nombre de tournois'
+    case "quantity":
+      if (value == "" || isNaN(value)) {
+        errorDisplay(
+          "quantity",
+          "Vous devez renseigner le nombre de concours auquel vous avez participé "
+        );
+        quantity = null;
+      } else {
+        errorDisplay("quantity", "", true);
+        quantity = value;
+      }
+      break;
+    //Fonction permettant de vérifier le champ 'Ville sélectionnée'
+    case "radio":
+      for (const radioButton of radio) {
+        if (radioButton.checked) {
+          locations = radioButton.value;
+          break;
+        }
+      }
+      if (locations == null) {
+        errorDisplay("location", "Vous devez sélectionner un tournoi");
+        locations = null;
+      }
+      break;
+    // Fonction permettant de vérifier le champ si les checkbox "Condition d'utilisation"
+    // ainsi que "Prochains tournois" sont coché ou non
+    case "checkbox":
+      if (!checkbox1.checked) {
+        errorDisplay(
+          "checkbox",
+          "Vous devez accepter les conditions d'utilisation"
+        );
+        termOfUse = null;
+      } else {
+        errorDisplay("checkbox", "", true);
+        termOfUse = true;
+      }
+      if (!checkbox2.checked) {
+        nextEvenement = false;
+      } else {
+        nextEvenement = true;
+      }
+      break;
+    default:
+      null;
   }
 };
 
@@ -152,22 +183,24 @@ inputs.forEach((inputs) => {
   inputs.addEventListener("input", (e) => {
     switch (e.target.id) {
       case "first":
-        firstChecker(e.target.value);
+        checker("first", e.target.value);
         break;
       case "last":
-        lastChecker(e.target.value);
+        checker("last", e.target.value);
         break;
       case "email":
-        emailChecker(e.target.value);
+        checker("email", e.target.value);
         break;
       case "date":
-        dateChecker(e.target.value);
+        checker("date", e.target.value);
         break;
       case "quantity":
-        quantityChecker(e.target.value);
+        checker("quantity", e.target.value);
+      case "radio":
+        checker("radio");
         break;
-      default:
-        null;
+      case "checkbox":
+        checker("checkbox");
     }
   });
 });
@@ -208,21 +241,3 @@ form.addEventListener("submit", (e) => {
     alert("Erreur d'inscription");
   }
 });
-
-// let dateTest = new Date();
-// dateTest.setFullYear(dateTest.getFullYear() - 5);
-
-// const dateParser = (date) => {
-//   let newDate = new Date(date).toLocaleDateString("fr-FR", {
-//     year: "numeric",
-//     month: "long",
-//     day: "numeric",
-//   });
-//   return newDate;
-// };
-// console.log(new Date().toLocaleDateString("fr-FR"));
-// console.log(dateParser(dateTest));
-// let dateNaissance = dateParser(new Date());
-// if (dateNaissance < dateParser(dateTest)) {
-//   console.log("Date invalide");
-// }
