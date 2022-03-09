@@ -1,4 +1,4 @@
-// Déclaration des variables 
+// Déclaration des variables
 
 const inputs = document.querySelectorAll(
   "input[type=text], input[type=number], input[type=email], input[type=date], input[type=checkbox]"
@@ -78,12 +78,17 @@ const dateChecker = (value) => {
     });
     return newDate;
   };
+  let dateLimit = new Date();
+  dateLimit = dateLimit.setFullYear(dateLimit.getFullYear() - 5);
   if (
     !value.match(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/) ||
     value == "" ||
     value == "jj/mm/aaaa"
   ) {
     errorDisplay("date", "Veuillez renseigner votre date de naissance");
+    date = null;
+  } else if (Date.parse(value) > dateLimit) {
+    errorDisplay("date", "Veuillez renseigner une date de naissance valide");
     date = null;
   } else {
     let parseDate = dateParser(value);
@@ -167,10 +172,9 @@ inputs.forEach((inputs) => {
   });
 });
 
-
 // Événement lors du click sur le bouton "Submit" du formulaire
 //Stockage des données utilisateur sous forme de tableaux , affichage d'un message de validation ou d'erreur
-//Déclaration des fonctions de vérification des boutons radio et des checkbox 
+//Déclaration des fonctions de vérification des boutons radio et des checkbox
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -198,9 +202,27 @@ form.addEventListener("submit", (e) => {
     quantity = null;
     locations = null;
     nextEvenement = null;
-    modal.innerHTML = "<div class='modal__finish'> <h3>Merci pour votre inscription</h3></div>"
+    modal.innerHTML =
+      "<div class='modal__finish'> <h3>Merci pour votre inscription</h3></div>";
   } else {
     alert("Erreur d'inscription");
   }
 });
 
+// let dateTest = new Date();
+// dateTest.setFullYear(dateTest.getFullYear() - 5);
+
+// const dateParser = (date) => {
+//   let newDate = new Date(date).toLocaleDateString("fr-FR", {
+//     year: "numeric",
+//     month: "long",
+//     day: "numeric",
+//   });
+//   return newDate;
+// };
+// console.log(new Date().toLocaleDateString("fr-FR"));
+// console.log(dateParser(dateTest));
+// let dateNaissance = dateParser(new Date());
+// if (dateNaissance < dateParser(dateTest)) {
+//   console.log("Date invalide");
+// }
